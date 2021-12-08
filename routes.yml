@@ -1,4 +1,4 @@
-gateway: "10.0.8.1"
+gateway: "10.8.0.1"
 domains:
 - "protonmail.com"
 - "account.protonmail.com"
