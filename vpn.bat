@@ -10,3 +10,10 @@ route ADD 195.82.146.214  MASK 255.255.255.255 10.8.0.1 :: rutracker.org
 route ADD 172.67.137.176  MASK 255.255.255.255 10.8.0.1 :: rutracker.org
 route ADD 104.21.56.234   MASK 255.255.255.255 10.8.0.1 :: rutracker.org
 route ADD 18.194.100.90   MASK 255.255.255.255 10.8.0.1 :: gulagu.net
+route ADD 104.22.65.195   MASK 255.255.255.255 10.8.0.1 :: gulagu.net
+route ADD 104.22.64.195   MASK 255.255.255.255 10.8.0.1 :: gulagu.net
+route ADD 172.67.7.131    MASK 255.255.255.255 10.8.0.1 :: gulagu.net
+route ADD 116.202.120.166 MASK 255.255.255.255 10.8.0.1 :: torproject.org
+route ADD 38.229.82.25    MASK 255.255.255.255 10.8.0.1 :: torproject.org
+route ADD 95.216.163.36   MASK 255.255.255.255 10.8.0.1 :: torproject.org
+route ADD 116.202.120.165 MASK 255.255.255.255 10.8.0.1 :: torproject.org
