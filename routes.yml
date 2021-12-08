@@ -1,0 +1,11 @@
+gateway: "10.0.8.1"
+domains:
+- "protonmail.com"
+- "account.protonmail.com"
+- "mail.protonmail.com"
+- "vpsie.com"
+- "linkedin.com"
+- "ru.linkedin.com"
+- "rutracker.org"
+- "gulagu.net"
+- "torproject.org"
