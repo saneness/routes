@@ -7,7 +7,7 @@ from yaml.loader import Loader
 TEMPLATE = {
     "keenetic": {
         "extension": ".keenetic",
-        "template" : "ip route {ip:15} {gateway} OpenVPN0"
+        "template" : "ip route {ip:15} {gateway}"
     },
     "windows" : {
         "extension": ".bat",
@@ -38,7 +38,7 @@ def routes(os, domains, gateway, update, router, password):
     if update:
         for route in routes:
             cmd = f"sshpass -p {password} ssh {router} {route}".split()
-            print(subprocess.check_output(cmd))
+            subprocess.call(cmd)
 
 if __name__ == '__main__':
     args = args()
