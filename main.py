@@ -21,7 +21,7 @@ TEMPLATE = {
 
 def args():
     parser   = argparse.ArgumentParser(description="Generate and/or update routes.")
-    parser.add_argument("-c", "--conf", metavar="\b", default="routes.yml", help="Path to configuration file with a gateway and domains (default: routes.yml)")
+    parser.add_argument("-c", "--conf", metavar="\b", default="config.yml", help="Path to configuration file with a gateway and domains (default: routes.yml)")
     parser.add_argument("-o", "--os", metavar="\b", default="keenetic", help="One of the operating systems: keenetic, windows, linux (default: keenetic)")
     parser.add_argument("-u", "--update", action="store_true", help="Use this flag to update routes on a router")
     parser.add_argument("-r", "--router", metavar="\b", default="admin@192.168.1.1", help="Hostname or ip address to update routes on (default: admin@192.168.1.1)")
