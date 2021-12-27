@@ -2,7 +2,6 @@ import argparse
 import yaml
 import subprocess
 import re
-from yaml.loader import Loader
 
 TEMPLATE = {
     "keenetic": {
@@ -49,7 +48,7 @@ def routes(os, domains, gateway, update, router, password):
 
 if __name__ == '__main__':
     args = args()
-    config   = yaml.load(open(args.conf).read(), Loader=Loader)
+    config   = yaml.load(open(args.conf).read(), Loader=yaml.Loader)
     domains  = config["domains"]
     gateway  = config["gateway"]
     routes(os=args.os, domains=domains, gateway=gateway, update=args.update, router=args.router, password=args.password)
