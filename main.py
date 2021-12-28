@@ -2,6 +2,7 @@ import argparse
 import yaml
 import subprocess
 import re
+import itertools
 
 TEMPLATE = {
     "keenetic": {
@@ -10,7 +11,7 @@ TEMPLATE = {
     },
     "windows" : {
         "extension": ".bat",
-        "template" : "route ADD {ip:15} MASK 255.255.255.255 {gateway} :: {domain}"
+        "template" : "route ADD {ip:15} MASK 255.255.255.255 {gateway}"
     },
     "linux"   : {
         "extension": ".sh",
@@ -30,21 +31,27 @@ def args():
 def routes(os, domains, gateway, update, router, password):
     ip_regex = re.compile("^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
     os = TEMPLATE[os]
-    routes = []
+    commands = {}
+    print(f"[INFO] Digging all the domains from the list. ({len(domains)} domains in total)")
     for domain in domains:
+        commands.update({domain: []})
         ips = list(filter(ip_regex.match, [str(item)[2:-1] for item in subprocess.check_output(["dig", "+short", domain]).split()]))
         for ip in ips:
             route = eval(f'f"{os["template"]}"')
-            routes.append(route)    
-    open("routes" + os["extension"], "w+").write("\n".join(routes))
-    routes = open("routes" + os["extension"]).read().split('\n')
+            commands.get(domain).append(route)
+    print("[INFO] Digging complete.")
+    open("routes" + os["extension"], "w+").write("\n".join(list(itertools.chain(*commands.values()))))
     if update:
-        for route in routes:
-            if password:
-                cmd = f"sshpass -p {password} ssh {router} {route}".split()
-            else:
-                cmd = f"ssh {router} {route}".split()
-            subprocess.call(cmd)
+        print("[INFO] Updating routes on the device:")
+        for domain in commands:
+            print(f"[INFO] {list(commands.keys()).index(domain)}/{len(commands.keys())} ({domain})")
+            routes = commands[domain]
+            for route in routes:
+                if password:
+                    subprocess.call(f"sshpass -p {password} ssh {router} {route}".split())
+                else:
+                    subprocess.call(f"ssh {router} {route}".split())
+        print("[INFO] Updating complete.")
 
 if __name__ == '__main__':
     args = args()
