@@ -50,7 +50,7 @@ def routes(os, domains, gateway, update, router, password):
     if update:
         print("[INFO] Updating routes on the device:")
         for route in routes:
-            print(f"[INFO] {routes.index(route)}/{len(routes)}")
+            print(f"[INFO] Updating {routes.index(route)}/{len(routes)}.")
             if password:
                 subprocess.call(f"sshpass -p {password} ssh {router} {route}".split())
             else:
