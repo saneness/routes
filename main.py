@@ -1,8 +1,10 @@
 import argparse
-import yaml
-import subprocess
+import logging
 import re
+import subprocess
+import sys
 import time
+import yaml
 
 TEMPLATE = {
     "keenetic": {
@@ -27,35 +29,60 @@ def args():
     parser.add_argument("-u", "--update", action="store_true", help="Use this flag to update routes on a router")
     parser.add_argument("-r", "--router", metavar="\b", default="admin@192.168.1.1", help="Hostname or ip address to update routes on (default: admin@192.168.1.1)")
     parser.add_argument("-p", "--password", metavar="\b", help="Password in case it required on the host")
+    parser.add_argument("-l", "--log", metavar="\b", help="Log file to write log in.")
     args = parser.parse_args()
     args.delay = int(args.delay)
     return args
 
-def routes(os, domains, gateway, update, router, password):
+def routes(os, domains, gateway, update, router, password, log):
+
+    # logging initial setup
+    logFormatter = logging.Formatter("%(asctime)s [%(levelname)s]  %(message)s")
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+
+    if log:
+        fileHandler = logging.FileHandler(f"{log}")
+        fileHandler.setFormatter(logFormatter)
+        logger.addHandler(fileHandler)
+    else:
+        consoleHandler = logging.StreamHandler(sys.stdout)
+        consoleHandler.setFormatter(logFormatter)
+        logger.addHandler(consoleHandler)
+
     ip_regex = re.compile("^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
     os = TEMPLATE[os]
     routes = []
-    print(f"[INFO] Digging all the domains from the list. ({len(domains)} domains in total)")
+    logger.info(f"Digging all the domains from the list. ({len(domains)} domains in total)")
     try:
         for domain in domains:
             ips = list(filter(ip_regex.match, [str(item)[2:-1] for item in subprocess.check_output(["dig", "+short", domain]).split()]))
             for ip in ips:
                 route = eval(f'f"{os["template"]}"')
                 routes.append(route)
-        print("[INFO] Digging complete.")
+        logger.info("Digging complete.")
         open("routes" + os["extension"], "w+").write("\n".join(routes))
     except subprocess.CalledProcessError:
-        print("[INFO] Digging failed. Reading routes from the file ({'routes' + os['extension']}).")
+        logger.info("Digging failed. Reading routes from the file ({'routes' + os['extension']}).")
         routes = open("routes" + os["extension"]).read().split("\n")
     if update:
-        print("[INFO] Updating routes on the device:")
+        logger.info("Updating routes on the device:")
         for route in routes:
-            print(f"[INFO] Updating {routes.index(route)+1}/{len(routes)}.")
+            logger.info(f"Updating {routes.index(route)+1}/{len(routes)}.")
             if password:
-                subprocess.call(f"sshpass -p {password} ssh {router} {route}".split())
+                command = f"sshpass -p {password} ssh {router} {route}"
             else:
-                subprocess.call(f"ssh {router} {route}".split())
-        print("[INFO] Updating complete.")
+                command = f"ssh {router} {route}"
+            process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            with process.stdout:
+                try:
+                    for line in iter(process.stdout.readline, b""):
+                        log_line = line.replace(b"\x1b[K", b"").decode("utf-8").strip()
+                        if len(log_line) > 0:
+                            logger.info(log_line)
+                except subprocess.CalledProcessError as e:
+                    logger.error(f"{str(e)}")
+        logger.info("Updating complete.")
 
 if __name__ == '__main__':
     args = args()
@@ -63,4 +90,4 @@ if __name__ == '__main__':
     domains  = config["domains"]
     gateway  = config["gateway"]
     time.sleep(args.delay)
-    routes(os=args.os, domains=domains, gateway=gateway, update=args.update, router=args.router, password=args.password)
+    routes(os=args.os, domains=domains, gateway=gateway, update=args.update, router=args.router, password=args.password, log=args.log)
