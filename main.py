@@ -61,6 +61,7 @@ def routes(os, domains, gateway, update, router, password, log):
                 route = eval(f'f"{os["template"]}"')
                 routes.append(route)
         logger.info("Digging complete.")
+        routes = list(set(routes))
         open("routes" + os["extension"], "w+").write("\n".join(routes))
     except subprocess.CalledProcessError:
         logger.info("Digging failed. Reading routes from the file ({'routes' + os['extension']}).")
