@@ -9,15 +9,15 @@ import yaml
 TEMPLATE = {
     "keenetic": {
         "extension": ".keenetic",
-        "template" : "ip route {ip:15} {gateway}"
+        "template" : "ip route {ip:20} {gateway}"
     },
     "windows" : {
         "extension": ".bat",
-        "template" : "route ADD {ip:15} MASK 255.255.255.255 {gateway}"
+        "template" : "route ADD {ip:20} MASK 255.255.255.255 {gateway}"
     },
     "linux"   : {
         "extension": ".sh",
-        "template" : "route add -host {ip:15} gw {gateway}"
+        "template" : "route add -host {ip:20} gw {gateway}"
     }
 }
 
@@ -34,7 +34,7 @@ def args():
     args.delay = int(args.delay)
     return args
 
-def routes(os, domains, gateway, update, router, password, log):
+def routes(os, gateway, domains, update, router, password, log):
 
     # logging initial setup
     logFormatter = logging.Formatter("%(asctime)s [%(levelname)s]  %(message)s")
@@ -88,7 +88,7 @@ def routes(os, domains, gateway, update, router, password, log):
 if __name__ == '__main__':
     args = args()
     config   = yaml.load(open(args.conf).read(), Loader=yaml.Loader)
-    domains  = config["domains"]
     gateway  = config["gateway"]
+    domains  = config["domains"]
     time.sleep(args.delay)
-    routes(os=args.os, domains=domains, gateway=gateway, update=args.update, router=args.router, password=args.password, log=args.log)
+    routes(os=args.os, gateway=gateway, domains=domains, update=args.update, router=args.router, password=args.password, log=args.log)
