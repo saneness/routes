@@ -2,6 +2,8 @@ gateway: 10.8.0.1
 domains:
 - bbc.com
 - ru.bellingcat.com
+- chess.com
+- www.chess.com
 - ru.euronews.com
 - facebook.com
 - static.xx.fbcdn.net
