@@ -1,4 +1,3 @@
-gateway: 10.8.0.1
 domains:
 - bbc.com
 - ru.bellingcat.com
@@ -11,8 +10,8 @@ domains:
 - gulagu.net
 - holod.media
 - instagram.com
-- i.instagram.com
 - graph.instagram.com
+- i.instagram.com
 - linkedin.com
 - ru.linkedin.com
 - meduza.io
@@ -22,6 +21,10 @@ domains:
 - navalny.com
 - nevzorov.tv
 - ovdinfo.org
+- paperpaper.ru
+- protonmail.com
+- account.protonmail.com
+- mail.protonmail.com
 - readovka.news
 - rutracker.org
 - tjournal.ru
@@ -29,9 +32,6 @@ domains:
 - tvrain.ru
 - twitter.com
 - mobile.twitter.com
-- paperpaper.ru
-- protonmail.com
-- account.protonmail.com
-- mail.protonmail.com
 - vpsie.com
 - zona.media
+gateway: 10.8.0.1
