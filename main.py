@@ -23,7 +23,7 @@ TEMPLATE = {
 
 def args():
     parser   = argparse.ArgumentParser(description="Generate and/or update routes.")
-    parser.add_argument("-c", "--conf", metavar="\b", default="config.yml", help="Path to configuration file with a gateway and domains (default: routes.yml)")
+    parser.add_argument("-c", "--conf", metavar="\b", default="config.yml", help="Path to configuration file with a gateway and domains (default: config.yml)")
     parser.add_argument("-d", "--delay", metavar="\b", default=0, help="Delay before execution")
     parser.add_argument("-o", "--os", metavar="\b", default="keenetic", help="One of the operating systems: keenetic, windows, linux (default: keenetic)")
     parser.add_argument("-u", "--update", action="store_true", help="Use this flag to update routes on a router")
@@ -69,7 +69,7 @@ def routes(os, gateway, domains, update, router, password, log):
     if update:
         logger.info("Updating routes on the device:")
         for route in routes:
-            logger.info(f"Updating {routes.index(route)+1}/{len(routes)}.")
+            logger.info(f"Updating {routes.index(route)+1}/{len(routes)} ({route.split()[2]}).")
             if password:
                 command = f"sshpass -p {password} ssh {router} {route}"
             else:
