@@ -1,5 +1,6 @@
 domains:
 - bbc.com
+- www.bbc.com
 - ru.bellingcat.com
 - chess.com
 - www.chess.com
@@ -7,6 +8,8 @@ domains:
 - ru.euronews.com
 - facebook.com
 - static.xx.fbcdn.net
+- golos-ameriki.ru
+- www.golosameriki.com
 - news.google.com
 - gulagu.net
 - holod.media
@@ -30,7 +33,10 @@ domains:
 - account.protonmail.com
 - mail.protonmail.com
 - readovka.news
+- gdb.rferl.org
 - rutracker.org
+- svoboda.org
+- www.svoboda.org
 - tjournal.ru
 - torproject.org
 - tvrain.ru
